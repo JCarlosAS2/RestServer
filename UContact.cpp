@@ -68,15 +68,16 @@ String __fastcall TContact::FindContact(String pWhere, String & Error )
  DM->FDQueryContact->Close();
 
  try {
-   String sSqlCmd = "SELECT  personal.UID, personal.ID, personal.FirstName, personal.SecondName, personal.Addr,  personal.DateBirth,  personal.PhoneNumbers,   personal.Photo, personal.Age FROM   personal ";
+   String sSqlCmd = "SELECT  UID, ID, FirstName, SecondName, Addr, DateBirth, PhoneNumbers, Photo, CAST((julianday('now') - julianday(DateBirth)) / 365.25 AS INTEGER) AS Age   FROM   personal ";
    DM->FDQueryContact->SQL->Text = sSqlCmd;
 
    if (Trim(pWhere).Length() > 0 ) {
-     DM->FDQueryContact->SQL->Add(" Where " + pWhere);
+	DM->FDQueryContact->Filter = pWhere;// DM->FDQueryContact->SQL->Add(" Where " + pWhere);
+    DM->FDQueryContact->Filtered = true;
    }
 
    //Error = DM->FDQueryContact->SQL->Text;
-
+   DM->FDQueryContact->SQL->SaveToFile("E:\\SQL.txt")  ;
    DM->FDQueryContact->Open();
    TJSONObject * JObj   = new TJSONObject();
    TJSONArray  * JArray = new TJSONArray();
@@ -93,13 +94,14 @@ String __fastcall TContact::FindContact(String pWhere, String & Error )
 	  TJSONNumber * JSONNumber;
 	  TJSONString * JSONString;
 
-	  int iNumero;
+	  int iNumero, tmp;
 	  float fNumero;
 	  double dNumero;
 	  String sFieldName, sValue;
 
 	  DM->FDQueryContact->DisableControls();
 	  DM->FDQueryContact->First();
+	  //tmp = DM->FDQueryContact->RecordCount;
 	  while (!DM->FDQueryContact->Eof)
 	  {
 	   for (i = 0; i< DM->FDQueryContact->FieldCount; i++)
@@ -185,7 +187,7 @@ String __fastcall TContact::FindContact(String pWhere, String & Error )
 	DM->FDQueryContact->SQL->Add( "  SecondName, " );
 	DM->FDQueryContact->SQL->Add( "  PhoneNumbers, " );
 	DM->FDQueryContact->SQL->Add( "  Addr, " );
-	DM->FDQueryContact->SQL->Add( "  Age, " );
+	DM->FDQueryContact->SQL->Add( "  DateBirth, " );
 
 	DM->FDQueryContact->SQL->Add( "  Photo )" );
 	DM->FDQueryContact->SQL->Add( "values( " );
@@ -196,7 +198,7 @@ String __fastcall TContact::FindContact(String pWhere, String & Error )
 	DM->FDQueryContact->SQL->Add( Format( "%s, ", ARRAYOFCONST(( QuotedStr( FSecondName ) )) ) );
 	DM->FDQueryContact->SQL->Add( Format( "%s, ", ARRAYOFCONST(( QuotedStr( FPhoneNumbers ) )) ) );
 	DM->FDQueryContact->SQL->Add( Format( "%s, ", ARRAYOFCONST(( QuotedStr( FAddr ) )) ) );
-	DM->FDQueryContact->SQL->Add( Format( "%s, ", ARRAYOFCONST(( QuotedStr( FAge ) )) ) );
+	DM->FDQueryContact->SQL->Add( Format( "%s, ", ARRAYOFCONST(( QuotedStr( FDateBirth ) )) ) );
 
 	DM->FDQueryContact->SQL->Add( Format( "%s) ", ARRAYOFCONST(( QuotedStr( FPhoto ) )) ) );
 
@@ -230,9 +232,9 @@ bool __fastcall TContact::UpdateContact( String& Error )
 	DM->FDQueryContact->SQL->Add( Format( "  SecondName = %s, ", ARRAYOFCONST(( QuotedStr( FSecondName ) )) ) );
 	DM->FDQueryContact->SQL->Add( Format( "  PhoneNumbers = %s, ", ARRAYOFCONST(( QuotedStr( FPhoneNumbers ) )) ) );
 	DM->FDQueryContact->SQL->Add( Format( "  Addr = %s, ", ARRAYOFCONST(( QuotedStr( FAddr ) )) ) );
-	DM->FDQueryContact->SQL->Add( Format( "  Age = %s, ", ARRAYOFCONST(( QuotedStr( FAge ) )) ) );
+	DM->FDQueryContact->SQL->Add( Format( "  DateBirth = %s, ", ARRAYOFCONST(( QuotedStr( FDateBirth ) )) ) );
 	DM->FDQueryContact->SQL->Add( Format( "  Photo = %s  ", ARRAYOFCONST(( QuotedStr( FPhoto ) )) ) );
-	DM->FDQueryContact->SQL->Add( Format( "where id = %d;", ARRAYOFCONST(( FID )) ) );
+	DM->FDQueryContact->SQL->Add( Format( " where id = %d;", ARRAYOFCONST(( FID )) ) );
 
 	//  DM->FDQueryContact->SQL->SaveToFile("E:\\SQL.txt")  ;
 

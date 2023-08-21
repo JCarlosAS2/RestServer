@@ -104,24 +104,29 @@ String lessChar=">" ;
 			{
 			  param1 = req->Params[0].Strings[i];
 			  stTmp1 = GetValueBefore(param1, equalChar);
-			  stTmp2 = GetValueAfter(param1, equalChar);
+
+			  if (Trim(stTmp1.UpperCase()) == "AGE")  stTmp2 = GetValueAfter(param1, equalChar);
+				  else stTmp2 = QuotedStr(GetValueAfter(param1, equalChar));
+
 			  OperSig = equalChar;
 
 			  if (stTmp1.IsEmpty()) {
 				stTmp1 = GetValueBefore(param1, moreChar);
-				stTmp2 = GetValueAfter(param1, moreChar);
-				OperSig = moreChar;
+			  if (Trim(stTmp1.UpperCase()) == "AGE")  stTmp2 = GetValueAfter(param1, moreChar);
+				  else stTmp2 = QuotedStr(GetValueAfter(param1, moreChar));
+			  OperSig = moreChar;
 			  }
 
 			  if (stTmp1.IsEmpty()) {
 				stTmp1 = GetValueBefore(param1, lessChar);
-				stTmp2 = GetValueAfter(param1, lessChar);
+			  if (Trim(stTmp1.UpperCase())== "AGE")  stTmp2 = GetValueAfter(param1, lessChar);
+				  else stTmp2 = QuotedStr(GetValueAfter(param1, lessChar));
 				OperSig = lessChar;
 			  }
 			  if (i == 0)
-				st->Add(Format(" %s %s %s", (String) stTmp1, OperSig, QuotedStr(stTmp2)));
+				st->Add(Format(" %s %s %s", (String) stTmp1, OperSig, stTmp2));
 			  else
-				st->Add(Format(" and %s %s %s", (String) stTmp1, OperSig, QuotedStr(stTmp2)));
+				st->Add(Format(" and %s %s %s", (String) stTmp1, OperSig, stTmp2));
 			}
 		  }
 		  else
@@ -227,43 +232,39 @@ void __fastcall TForm1::UpdateCliente(TIdHTTPRequestInfo *req, TIdHTTPResponseIn
 
   strTmp =jsValue->ToString() ;
 
-
   if (req->URI !=slash)
 	if (TryStrToInt(GetValueAfter(req->URI, slash), id) )
 	{
+	  Contact->ID			= id; //StrToIntDef( GetJsonValue( jsObj, "ID" ),0);
+	  Contact->Age			= StrToIntDef( GetJsonValue( jsObj, "Age" ),0);
 
-  Contact->ID			= id; //StrToIntDef( GetJsonValue( jsObj, "ID" ),0);
-  Contact->Age			= StrToIntDef( GetJsonValue( jsObj, "Age" ),0);
-
-  Contact->UID 			= GetJsonValue( jsObj, "UID" );
-  Contact->FirstName 	= GetJsonValue( jsObj, "FirstName" );
-  Contact->SecondName 	= GetJsonValue( jsObj, "SecondName" );
-  Contact->PhoneNumbers = GetJsonValue( jsObj, "PhoneNumbers" );
-  Contact->Addr			= GetJsonValue( jsObj, "Addr" );
-  Contact->Photo 		= GetJsonValue( jsObj, "Photo" );
-  Contact->DateBirth 	= GetJsonValue( jsObj, "DateBirth" );
+	  Contact->UID 			= GetJsonValue( jsObj, "UID" );
+	  Contact->FirstName 	= GetJsonValue( jsObj, "FirstName" );
+	  Contact->SecondName 	= GetJsonValue( jsObj, "SecondName" );
+	  Contact->PhoneNumbers = GetJsonValue( jsObj, "PhoneNumbers" );
+	  Contact->Addr			= GetJsonValue( jsObj, "Addr" );
+	  Contact->Photo 		= GetJsonValue( jsObj, "Photo" );
+	  Contact->DateBirth 	= GetJsonValue( jsObj, "DateBirth" );
 
 
-  if (Contact->UpdateContact(Error))
-	  {
-		res->ResponseNo  = 200;
-	  }
-	  else
-	  {
-		res->ContentText = Error;
-		res->ResponseNo  = 500;
-	  }
-
-	  st->Free();
-	  jsObj->Free();
-	}
-    else
-	{
-	  res->ResponseNo  = 403;
-	  res->ContentText = res->ResponseText;
-	}
+	  if (Contact->UpdateContact(Error))
+		  {
+			res->ResponseNo  = 200;
+		  }
+		  else
+		  {
+			res->ContentText = Error;
+			res->ResponseNo  = 500;
+		  }
+		  st->Free();
+		  jsObj->Free();
+		}
+		else
+		{
+		  res->ResponseNo  = 403;
+		  res->ContentText = res->ResponseText;
+		}
   }
-
  //---------------------------------------------------------------------------
 
  void __fastcall TForm1::DeleteCliente(TIdHTTPRequestInfo *req, TIdHTTPResponseInfo *res)
@@ -272,7 +273,6 @@ void __fastcall TForm1::UpdateCliente(TIdHTTPRequestInfo *req, TIdHTTPResponseIn
   int id;
   String Error;
   String slash ="/";
-
   if (req->URI !=slash)
 	if (TryStrToInt(GetValueAfter(req->URI, slash), id) )
 	{
@@ -292,11 +292,10 @@ void __fastcall TForm1::UpdateCliente(TIdHTTPRequestInfo *req, TIdHTTPResponseIn
 	};
   }
 
-
  //---------------------------------------------------------------------------
 
 void __fastcall TForm1::IdHTTPServer1CommandGet(TIdContext *AContext, TIdHTTPRequestInfo *ARequestInfo,
-          TIdHTTPResponseInfo *AResponseInfo)
+		  TIdHTTPResponseInfo *AResponseInfo)
 {
  if (CheckAuthentication(ARequestInfo, AResponseInfo))
 
@@ -348,4 +347,5 @@ void __fastcall TForm1::IdHTTPServer1CommandOther(TIdContext *AContext, TIdHTTPR
 
 }
 //---------------------------------------------------------------------------
+
 

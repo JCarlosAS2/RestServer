@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Rest WebService Juan Carlos Sepulveda'
-  ClientHeight = 559
-  ClientWidth = 536
+  ClientHeight = 550
+  ClientWidth = 530
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,7 +15,7 @@ object Form1: TForm1
   object lblNome: TLabel
     Left = 0
     Top = 0
-    Width = 536
+    Width = 530
     Height = 24
     Margins.Left = 2
     Margins.Top = 2
@@ -36,7 +36,7 @@ object Form1: TForm1
   object Label3: TLabel
     Left = 0
     Top = 51
-    Width = 536
+    Width = 530
     Height = 19
     Align = alTop
     Caption = 
@@ -55,16 +55,17 @@ object Form1: TForm1
   object Splitter1: TSplitter
     Left = 0
     Top = 235
-    Width = 536
+    Width = 530
     Height = 0
     Cursor = crVSplit
     Align = alTop
     ExplicitTop = 241
+    ExplicitWidth = 536
   end
   object lblinfo: TStaticText
     Left = 0
     Top = 24
-    Width = 536
+    Width = 530
     Height = 27
     Margins.Left = 2
     Margins.Top = 2
@@ -83,17 +84,14 @@ object Form1: TForm1
     ParentColor = False
     ParentFont = False
     TabOrder = 0
-    ExplicitWidth = 530
   end
   object GroupBox1: TGroupBox
     Left = 0
-    Top = 488
-    Width = 536
+    Top = 479
+    Width = 530
     Height = 71
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 479
-    ExplicitWidth = 530
     object Label1: TLabel
       Left = 197
       Top = 11
@@ -116,7 +114,7 @@ object Form1: TForm1
       Margins.Top = 2
       Margins.Right = 2
       Margins.Bottom = 2
-      Caption = 'Ativar WS'
+      Caption = 'Activate WS'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -14
@@ -165,7 +163,7 @@ object Form1: TForm1
   object GroupBox2: TGroupBox
     Left = 0
     Top = 70
-    Width = 536
+    Width = 530
     Height = 165
     Align = alTop
     Caption = 'Request'
@@ -176,7 +174,9 @@ object Form1: TForm1
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    ExplicitWidth = 530
+    ExplicitLeft = -8
+    ExplicitTop = 102
+    ExplicitWidth = 536
     object memLogReq: TMemo
       Left = 2
       Top = 21
@@ -196,13 +196,11 @@ object Form1: TForm1
   object GroupBox3: TGroupBox
     Left = 0
     Top = 235
-    Width = 536
-    Height = 253
+    Width = 530
+    Height = 244
     Align = alClient
     Caption = 'Respon'
     TabOrder = 3
-    ExplicitWidth = 530
-    ExplicitHeight = 244
     object memLogRes: TMemo
       Left = 2
       Top = 17
@@ -225,7 +223,7 @@ object Form1: TForm1
     DefaultPort = 8080
     OnCommandOther = IdHTTPServer1CommandOther
     OnCommandGet = IdHTTPServer1CommandGet
-    Left = 376
-    Top = 64
+    Left = 352
+    Top = 120
   end
 end

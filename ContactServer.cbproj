@@ -157,8 +157,8 @@
             <DependentOn>UUtils.h</DependentOn>
             <BuildOrder>4</BuildOrder>
         </CppCompile>
-        <FormResources Include="UMain.dfm"/>
         <FormResources Include="UDM.dfm"/>
+        <FormResources Include="UMain.dfm"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
